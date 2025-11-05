@@ -1,0 +1,246 @@
+/* Add your CSS here to style your halloween page */
+.button {
+  background-color: #ddd;
+  border: none;
+  color: black;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 16px;
+}
+
+/* Color variants */
+.button.pumpkin { background: linear-gradient(180deg,#ff8b43,#ff6b12); color:#2b0b00; }
+.button.pumpkin:hover{ box-shadow:0 8px 20px rgba(255,107,18,0.28); }
+.button.purple  { background: linear-gradient(180deg,#cfa3ff,#7a1f9a); color:#fff; }
+.button.purple:hover{ box-shadow:0 8px 20px rgba(122,31,154,0.28); }
+.button.green   { background: linear-gradient(180deg,#b6ff9b,#39a12b); color:#082405; }
+.button.green:hover{ box-shadow:0 8px 20px rgba(57,161,43,0.28); }
+.button.blood   { background: linear-gradient(180deg,#ff878f,#8b0000); color:#fff; }
+.button.blood:hover{ box-shadow:0 8px 20px rgba(139,0,0,0.35); }
+
+/* Hover animations */
+.button{
+  transition: transform .18s cubic-bezier(.2,.9,.2,1), box-shadow .18s ease, filter .12s ease;
+}
+.button:hover{ transform: translateY(-4px) scale(1.02); }
+
+/* Variant-specific hover animations */
+/* More dramatic variant animations using pseudo-elements where appropriate */
+.button{ position:relative; overflow:visible; }
+
+/* Pumpkin: radial burst glow behind the button */
+.button.pumpkin::before{
+  content: '';
+  position: absolute;
+  left:50%; top:50%;
+  width: 0; height:0;
+  transform: translate(-50%,-50%);
+  border-radius: 50%;
+  pointer-events: none;
+  transition: width .5s ease, height .5s ease, opacity .5s ease;
+  opacity:0;
+}
+.button.pumpkin:hover::before{
+  width:220%; height:220%; opacity:.18;
+  background: radial-gradient(circle at center, rgba(255,140,36,0.95), rgba(255,140,36,0.15) 40%, transparent 60%);
+}
+.button.pumpkin:hover{ animation: pumpkin-pulse 1.2s ease-in-out infinite; transform-origin:center; }
+@keyframes pumpkin-pulse{
+  0%{ transform: translateY(-4px) scale(1.02); filter:brightness(1); box-shadow: 0 10px 26px rgba(255,107,18,0.28); }
+  50%{ transform: translateY(-8px) scale(1.06); filter:brightness(1.06); box-shadow: 0 28px 60px rgba(255,107,18,0.46); }
+  100%{ transform: translateY(-4px) scale(1.02); filter:brightness(1); box-shadow: 0 10px 26px rgba(255,107,18,0.28); }
+}
+
+/* Purple: a fast spectral shine that sweeps across via a pseudo-element */
+.button.purple::after{
+  content:'';
+  position:absolute; left:-40%; top:0; width:0; height:100%;
+  background: linear-gradient(90deg, rgba(255,255,255,0.0) 0%, rgba(255,255,255,0.35) 50%, rgba(255,255,255,0) 100%);
+  transform:skewX(-20deg);
+  pointer-events:none;
+}
+.button.purple:hover::after{ animation: purple-sweep .9s ease forwards; }
+@keyframes purple-sweep{ 0%{ left:-40%; width:30%; opacity:.0 } 50%{ left:10%; width:60%; opacity:.8 } 100%{ left:140%; width:30%; opacity:0 } }
+.button.purple:hover{ transform: translateY(-6px) scale(1.04); }
+
+/* Green: squishy expand + rubbery bounce */
+.button.green:hover{ animation: green-squish .6s cubic-bezier(.2,.9,.3,1) 1; }
+@keyframes green-squish{ 0%{ transform: translateY(-4px) scale(1.02) } 40%{ transform: translateY(-10px) scale(1.12,0.92) } 70%{ transform: translateY(-6px) scale(.98,1.06) } 100%{ transform: translateY(-4px) scale(1.02) } }
+
+/* Blood: dramatic pull + settle (longer easing) */
+.button.blood::after{ content:''; position:absolute; left:0; bottom:-6px; width:100%; height:6px; background: rgba(139,0,0,0.25); border-radius:50%; opacity:0; transform:translateY(0); transition: opacity .12s ease, transform .4s cubic-bezier(.2,.9,.2,1); pointer-events:none; }
+.button.blood:hover{ transform: translateY(-8px) scale(1.03); animation: blood-stretch .6s ease forwards; }
+.button.blood:hover::after{ opacity:1; transform: translateY(6px); }
+@keyframes blood-stretch{ 0%{ transform: translateY(-4px) scale(1.02) } 60%{ transform: translateY(-14px) scale(1.08,0.95) } 100%{ transform: translateY(-8px) scale(1.03) } }
+
+/* Keep reduced motion preference honored */
+@media (prefers-reduced-motion: reduce){
+  .button, .button::before, .button::after{ transition:none !important; animation:none !important; }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .button, .button:hover, .button:focus{ transition: none !important; animation: none !important; transform: none !important; }
+}
+
+:root{
+  --bg-dark: #0b0b0f;
+  --pumpkin: #ff7f2a;
+  --accent: #7a1f9a;
+  --muted: #cfcfcf;
+}
+
+html,body{height:100%;}
+body{
+  margin:0;
+  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+  /* animated Halloween background: fades between pumpkin, purple, green/black moods */
+  background: radial-gradient(ellipse at 10% 10%, #1a0b12 0%, var(--bg-dark) 40%),
+              linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.9));
+  animation: bg-fade 30s ease-in-out infinite alternate;
+  -webkit-animation: bg-fade 30s ease-in-out infinite alternate;
+  color: var(--muted);
+}
+
+#wrapper{
+  max-width:1000px;
+  margin:0 auto;
+  padding:20px;
+}
+
+header nav ul{
+  list-style:none;
+  padding:0;
+
+/* background fade keyframes */
+@keyframes bg-fade{
+  0%{
+    background: radial-gradient(ellipse at 10% 10%, rgba(26,11,18,1) 0%, var(--bg-dark) 40%),
+                linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.9));
+  }
+  33%{
+    /* warm pumpkin glow */
+    background: radial-gradient(circle at 20% 20%, rgba(255,140,36,0.12), transparent 40%),
+                linear-gradient(180deg, rgba(255,127,42,0.06), rgba(15,6,0,0.85));
+  }
+  66%{
+    /* purple night */
+    background: radial-gradient(circle at 80% 10%, rgba(122,31,154,0.12), transparent 40%),
+                linear-gradient(180deg, rgba(25,6,40,0.6), rgba(3,0,8,0.95));
+  }
+  100%{
+    /* eerie green */
+    background: radial-gradient(circle at 50% 30%, rgba(57,161,43,0.08), transparent 50%),
+                linear-gradient(180deg, rgba(0,20,0,0.6), rgba(0,0,0,0.95));
+  }
+}
+
+@-webkit-keyframes bg-fade{
+  0%{
+    background: radial-gradient(ellipse at 10% 10%, rgba(26,11,18,1) 0%, var(--bg-dark) 40%),
+                linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.9));
+  }
+  33%{
+    background: radial-gradient(circle at 20% 20%, rgba(255,140,36,0.12), transparent 40%),
+                linear-gradient(180deg, rgba(255,127,42,0.06), rgba(15,6,0,0.85));
+  }
+  66%{
+    background: radial-gradient(circle at 80% 10%, rgba(122,31,154,0.12), transparent 40%),
+                linear-gradient(180deg, rgba(25,6,40,0.6), rgba(3,0,8,0.95));
+  }
+  100%{
+    background: radial-gradient(circle at 50% 30%, rgba(57,161,43,0.08), transparent 50%),
+                linear-gradient(180deg, rgba(0,20,0,0.6), rgba(0,0,0,0.95));
+  }
+}
+  display:flex;
+  gap:1rem;
+  justify-content:center;
+}
+header nav ul li{
+  background: rgba(255,255,255,0.03);
+  padding:8px 14px;
+  border-radius:8px;
+  color:var(--muted);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+}
+
+main{
+  padding:24px;
+}
+
+h1{
+  text-align:center;
+  font-size:3rem;
+  margin:12px 0 22px;
+  color: var(--pumpkin);
+  text-shadow: 0 2px 0 #5a1a00, 0 6px 24px rgba(0,0,0,0.7);
+}
+
+img.hallow-img{
+  display:block;
+  margin:0 auto 18px auto;
+  max-width:80%;
+  border:6px solid rgba(255,127,42,0.12);
+  border-radius:12px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+}
+
+section{
+  background: rgba(255,255,255,0.02);
+  padding:16px;
+  margin:12px auto;
+  border-radius:8px;
+  color:var(--muted);
+}
+
+h2{
+  color: var(--accent);
+}
+
+p{
+  line-height:1.6;
+}
+
+footer{
+  text-align:center;
+  padding:18px 0;
+  color:#888;
+}
+
+@media (max-width:600px){
+  h1{font-size:2rem}
+  img.hallow-img{max-width:95%}
+  header nav ul{flex-wrap:wrap}
+}
+
+.glow {
+  font-size: 80px;
+  color: var(--accent);
+  text-align: center;
+  -webkit-animation: glow 1s ease-in-out infinite alternate;
+  -moz-animation: glow 1s ease-in-out infinite alternate;
+  animation: glow 1s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes glow {
+  from {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+  }
+  to {
+    text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+  }
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+  }
+  to {
+    text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+  }
+}
